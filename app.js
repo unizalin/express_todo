@@ -66,30 +66,47 @@ app.post('/todos', (req, res) => {
 app.get('/todos/:id', (req, res) => {
   //從瀏覽器的請求 (request) 中取得 params，再從 params 取得 id，
   Todo.findById(req.params.id, (err, todo) => {
-    if (err) return console.error(err)
-    return res.render('detail', { todo: todo })
-  })
-})
+    if (err) return console.error(err);
+    return res.render('detail', { todo: todo });
+  });
+});
 
 // 新增一筆  Todo
 app.post('/todos', (req, res) => {
-  res.send('建立 Todo')
-})
+  res.send('建立 Todo');
+});
 
 // 修改 Todo 頁面
 app.get('/todos/:id/edit', (req, res) => {
-  res.send('修改 Todo 頁面')
-})
+  Todo.findById(req.params.id, (err, todo) => {
+    if (err) return console.error(err);
+    return res.render('edit', { todo: todo });
+  });
+});
 
 // 修改 Todo
 app.post('/todos/:id', (req, res) => {
-  res.send('修改 Todo')
-})
+  Todo.findById(req.params.id, (err, todo) => {
+    if (err) return console.error(err);
+    todo.name = req.body.name
+    todo.save(err => {
+      if (err) return console.error(err);
+      return res.redirect(`/todos/${req.params.id}`);
+    });
+  });
+});
 
 // 刪除 Todo
 app.post('/todos/:id/delete', (req, res) => {
-  res.send('刪除 Todo')
-})
+  Todo.findById(req.params.id, (err, todo) => {
+    if (err) return console.error(err);
+    todo.remove(err => {
+      if (err) return console.error(err);
+      return res.redirect('/');
+    });
+  });
+});
+
 
 app.listen(3000, () => {
   console.log('app 3000 port is ready');
