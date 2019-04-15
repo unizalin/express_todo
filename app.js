@@ -25,6 +25,13 @@ mongoose.connect('mongodb://localhost/todo', { useNewUrlParser: true });
 // mongoose 連線後透過 mongoose.connection 拿到 Connection 的物件
 const db = mongoose.connection;
 
+
+// 引用 method-override
+const methodOverride = require('method-override')
+
+// 設定 method-override
+app.use(methodOverride('_method'))
+
 //連線異常
 db.on('error', () => {
   console.log('mongodb error');
@@ -87,7 +94,7 @@ app.get('/todos/:id/edit', (req, res) => {
 });
 
 // 修改 Todo
-app.post('/todos/:id', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   Todo.findById(req.params.id, (err, todo) => {
     if (err) return console.error(err)
     todo.name = req.body.name
@@ -104,7 +111,7 @@ app.post('/todos/:id', (req, res) => {
 })
 
 // 刪除 Todo
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id/delete', (req, res) => {
   Todo.findById(req.params.id, (err, todo) => {
     if (err) return console.error(err);
     todo.remove(err => {
