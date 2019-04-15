@@ -121,6 +121,9 @@ app.delete('/todos/:id/delete', (req, res) => {
   });
 });
 
+// 載入路由器
+app.use('/', require('./routes/home'))
+app.use('/todos', require('./routes/todo'))
 
 app.listen(3000, () => {
   console.log('app 3000 port is ready');
