@@ -6,3 +6,11 @@ module.exports = {
     res.redirect('/users/login');
   }
 };
+
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/users/login');
+});
+
+module.exports = router;
