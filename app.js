@@ -27,10 +27,10 @@ const db = mongoose.connection;
 
 
 // 引用 method-override
-const methodOverride = require('method-override')
+const methodOverride = require('method-override');
 
 // 設定 method-override
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
 
 //連線異常
 db.on('error', () => {

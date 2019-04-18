@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const User = require('../models/user');
 
 //登入頁面
 router.get('/login', (req, res) => {
@@ -7,22 +8,48 @@ router.get('/login', (req, res) => {
 });
 
 // 登入檢查
-router.post('login', (req, res) => {
+router.post('/login', (req, res) => {
   res.render('login');
 });
 
 //註冊頁面
-router.get('register', (req, res) => {
+router.get('/register', (req, res) => {
   res.render('register');
 });
 
 //註冊檢查
-router.post('register', (req, res) => {
+router.post('/register', (req, res) => {
+  const { name, email, password, password2 } = req.body;
+  //確認是否用過
+  User.findOne({ email: email }).then(user => {
+    if (user) {
+      //有重複註冊，回傳資訊
+      res.render('register', {
+        name,
+        email,
+        password,
+        password2,
+      });
+    } else {
+      //不存在就新增，並導入回首頁
+      const newUser = new User({
+        name,
+        email,
+        password
+      });
+      newUser
+        .save()
+        .then(user => {
+          res.redirect('/');
+        })
+        .catch(err => console.log(err));
+    }
+  });
   res.render('register');
 });
 
 //登出
-router.post('logout', (req, res) => {
+router.post('/logout', (req, res) => {
   res.render('logout');
 });
 
