@@ -11,8 +11,11 @@ const passport = require('passport');
 app.use(session({
   secret: 'your secret key',                // secret: 定義一組自己的私鑰（字串)
 }));
+
 // 使用 Passport 
+//初始化
 app.use(passport.initialize());
+//使用login.session
 app.use(passport.session());
 
 // 載入 Passport config
@@ -50,6 +53,14 @@ const methodOverride = require('method-override');
 
 // 設定 method-override
 app.use(methodOverride('_method'));
+
+// 建立 local variables
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  res.locals.isAuthenticated = req.isAuthenticated()      // 辨識使用者是否已經登入的變數，讓 view 可以使用
+  next()
+})
+
 
 //連線異常
 db.on('error', () => {

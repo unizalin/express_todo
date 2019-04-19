@@ -25,6 +25,7 @@ router.get('/:id', authenticated, (req, res) => {
     return res.render('detail', { todo: todo });
   });
 });
+
 // 新增一筆  Todo
 router.post('/', authenticated, (req, res) => {
   const todo = Todo({
@@ -35,6 +36,8 @@ router.post('/', authenticated, (req, res) => {
     return res.redirect('/');
   });
 });
+
+
 // 修改 Todo 頁面
 router.get('/:id/edit', authenticated, (req, res) => {
   Todo.findById(req.params.id, (err, todo) => {
@@ -58,6 +61,8 @@ router.put('/:id', authenticated, (req, res) => {
     });
   });
 });
+
+
 // 刪除 Todo
 router.delete('/:id/delete', authenticated, (req, res) => {
   Todo.findById(req.params.id, (err, todo) => {
