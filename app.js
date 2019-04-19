@@ -3,6 +3,25 @@ const app = express();
 //載入 mongoose
 const mongoose = require('mongoose');
 
+// 載入 express-session 與 passport
+const session = require('express-session');
+const passport = require('passport');
+
+// 使用 express session 
+app.use(session({
+  secret: 'your secret key',                // secret: 定義一組自己的私鑰（字串)
+}));
+// 使用 Passport 
+app.use(passport.initialize());
+app.use(passport.session());
+
+// 載入 Passport config
+require('./config/passport')(passport);
+// 登入後可以取得使用者的資訊方便我們在 view 裡面直接使用
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
 
 // 引入 express-handlebars
 const exphbs = require('express-handlebars');
