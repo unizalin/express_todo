@@ -51,6 +51,9 @@ const db = mongoose.connection;
 // 引用 method-override
 const methodOverride = require('method-override');
 
+const bcrypt = require('bcryptjs')                   // 載入 bcryptjs library
+
+
 // 設定 method-override
 app.use(methodOverride('_method'));
 
